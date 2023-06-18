@@ -59,9 +59,9 @@ btns.forEach((button) => {
           if (playerScore == computerScore) {
             winnerDisplay.textContent = "Tie!";
           } else if (playerScore > computerScore) {
-            winnerDisplay.textContent = "Player wins!";
+            winnerDisplay.textContent = "You win, congrats!";
           } else {
-            winnerDisplay.textContent = "Computer Wins!";
+            winnerDisplay.textContent = "You Lost :(";
           }
           stopPlay = true;
         }
