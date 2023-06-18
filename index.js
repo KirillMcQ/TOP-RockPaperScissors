@@ -1,3 +1,10 @@
+const rockBtn = document.querySelector(".rock");
+const paperBtn = document.querySelector(".paper");
+const scissorBtn = document.querySelector(".scissors");
+const winnerDisplay = document.querySelector(".winnerDisplay");
+const scoreDisplay = document.querySelector(".scoreDisplay");
+const btns = document.querySelectorAll("button");
+
 function getComputerChoice() {
   let choice = Math.floor(Math.random() * (3 - 1 + 1) + 1);
   if (choice == 1) {
@@ -24,31 +31,41 @@ function playRound(computerSelection, playerSelection) {
   }
 }
 
-function game() {
-  let playerScore = 0;
-  let computerScore = 0;
-
-  while (playerScore < 5 && computerScore < 5) {
-    let computerChoice = getComputerChoice();
-    let userChoice = prompt("Enter rock, paper, or scissors");
-    let winner = playRound(computerChoice, userChoice);
-    if (winner == "tie") {
-      playerScore++;
-      computerScore++;
-    } else if (winner == "player") {
-      playerScore++;
+let playerScore = 0;
+let computerScore = 0;
+let stopPlay = false;
+scoreDisplay.textContent = `Player: ${playerScore} Computer: ${computerScore}`;
+btns.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (button.classList[0] == "reset") {
+      playerScore = 0;
+      computerScore = 0;
+      scoreDisplay.textContent = `Player: ${playerScore} Computer: ${computerScore}`;
+      winnerDisplay.textContent = "";
+      stopPlay = false;
     } else {
-      computerScore++;
+      if (!stopPlay) {
+        let winner = playRound(getComputerChoice(), button.classList[0]);
+        if (winner == "tie") {
+          playerScore++;
+          computerScore++;
+        } else if (winner == "player") {
+          playerScore++;
+        } else {
+          computerScore++;
+        }
+        scoreDisplay.textContent = `Player: ${playerScore} Computer: ${computerScore}`;
+        if (playerScore == 5 || computerScore == 5) {
+          if (playerScore == computerScore) {
+            winnerDisplay.textContent = "Tie!";
+          } else if (playerScore > computerScore) {
+            winnerDisplay.textContent = "You win, congrats!";
+          } else {
+            winnerDisplay.textContent = "You Lost :(";
+          }
+          stopPlay = true;
+        }
+      }
     }
-  }
-
-  if (playerScore == computerScore) {
-    return `Tie! Score: ${playerScore}-${computerScore}`;
-  } else if (playerScore > computerScore) {
-    return `Player wins! Score: ${playerScore}-${computerScore}`;
-  } else {
-    return `Computer wins! Score: ${playerScore}-${computerScore}`;
-  }
-}
-
-// console.log(game());
+  });
+});
